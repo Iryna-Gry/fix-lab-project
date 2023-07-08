@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import css from "./phones.module.scss";
+import css from "./earbuds.module.scss";
 
 const { NEXT_APP_BASE_URL } = process.env;
 async function getData() {
@@ -14,7 +14,7 @@ async function getData() {
   }
   return res.data;
 }
-export default async function Phones() {
+export default async function Earbuds() {
   const data = await getData();
   return (
     <>
