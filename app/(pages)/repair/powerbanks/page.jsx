@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import css from "./batteries.module.scss";
+import css from "./powerbanks.module.scss";
 
 const { NEXT_APP_BASE_URL } = process.env;
 async function getData() {
