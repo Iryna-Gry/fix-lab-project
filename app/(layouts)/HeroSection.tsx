@@ -125,7 +125,7 @@ export const HeroSection = () => {
 
   return (
     <section className='section xl:bg-herp-xl w-full bg-dark-blue bg-hero-xl py-0 md:bg-hero-md lg:bg-hero-lg xl:bg-hero-xl'>
-      <div className='lg h-full w-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[80px] pt-[156px] md:container md:bg-mscope-md md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
+      <div className='lg h-full w-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[25px] pt-[156px] md:container md:bg-mscope-md md:pb-[80px] md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
         <div className='relative flex flex-col md:px-4 xl:px-0'>
           <div className='mt-[-11px] flex flex-col items-center justify-start px-4 font-exo_2 text-white-dis md:w-[500px] md:items-start md:px-0'>
             <h2 className='text-3xl font-bold leading-none xl:text-title'>
