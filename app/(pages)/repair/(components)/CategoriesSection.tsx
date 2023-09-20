@@ -50,7 +50,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
   }, [setShowInstantAdviceModal])
 
   return (
-    <section className='section py-[120px] max-md:pb-[56px] max-md:pt-[120px]'>
+    <section className='section pb-[102px] pt-[170px] max-md:pb-[56px] max-md:pt-[110px]'>
       <div className='container flex flex-col gap-6 lg:px-0'>
         <div className='flex items-center gap-1'>
           <Link
