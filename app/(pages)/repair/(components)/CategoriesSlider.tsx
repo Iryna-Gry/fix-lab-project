@@ -19,7 +19,7 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
   return size.width > 767 ? (
     <CategoriesList categoryData={categoryData} />
   ) : (
-    <div className='navigation-wrapper relative z-10 mr-[-16px] md:mr-auto'>
+    <div className='navigation-wrapper relative z-10 md:mr-auto'>
       <div ref={ref} className='keen-slider'>
         {categoryData.data.map((item: CategoryItem) => {
           const categoryPath = item.attributes.slug
