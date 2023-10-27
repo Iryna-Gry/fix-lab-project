@@ -37,17 +37,12 @@ export class ArticlesController {
   @Get('')
   public async findActiveArticles(
     @Res() response: Response,
-    @Query() { page, limit }: PaginationDto
+    @Query() paginationDto: PaginationDto
   ): Promise<void> {
-    const articles = await this.articlesService.findWithPagination(
-      { page, limit },
-      { isActive: true }
-    );
+    const articles = await this.articlesService.findWithPagination(paginationDto, {
+      isActive: true
+    });
 
-    response.header(
-      'Content-Range',
-      `articles ${articles.rangeStart}-${articles.rangeEnd}/${articles.totalItems}`
-    );
     response.send(articles);
   }
 
@@ -70,9 +65,9 @@ export class ArticlesController {
   @Get('/all')
   public async findAllArticles(
     @Res() response: Response,
-    @Query() { page, limit }: PaginationDto
+    @Query() paginationDto: PaginationDto
   ): Promise<void> {
-    const articles = await this.articlesService.findWithPagination({ page, limit });
+    const articles = await this.articlesService.findWithPagination(paginationDto);
 
     response.header(
       'Content-Range',
