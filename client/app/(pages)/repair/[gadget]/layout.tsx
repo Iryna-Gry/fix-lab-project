@@ -16,4 +16,4 @@ export default async function RootLayout({
   return <div>{children}</div>
 }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!! layout.tsx протрібен для SSG перемістити в /repair!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!! layout.tsx протрібен для SSG перемістити в /[gadget]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
