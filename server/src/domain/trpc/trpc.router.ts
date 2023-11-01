@@ -37,7 +37,6 @@ export class TrpcRouter {
       .query(async ({ input }): Promise<Gadget | null> => {
         return await this.gadgetsService.findOneByQuery({ ...input });
       }),
-
     getIssuesQuery: this.trpc.procedure.query(async (): Promise<Issue[]> => {
       return await this.issuesService.findAllActive();
     }),
@@ -46,7 +45,6 @@ export class TrpcRouter {
       .query(async ({ input }): Promise<Issue | null> => {
         return await this.issuesService.findOneByQuery({ ...input });
       }),
-
     getBrandsQuery: this.trpc.procedure.query(async (): Promise<Brand[]> => {
       return await this.brandsService.findActive();
     }),
@@ -55,7 +53,6 @@ export class TrpcRouter {
       .query(async ({ input }): Promise<Brand | null> => {
         return await this.brandsService.findOneByQuery({ ...input });
       }),
-
     getArticlesQuery: this.trpc.procedure
       .input(
         z.object({
@@ -72,7 +69,6 @@ export class TrpcRouter {
       .query(async ({ input }): Promise<Article | null> => {
         return await this.articlesService.findOneByQuery({ ...input });
       }),
-
     getContactsQuery: this.trpc.procedure.query(async (): Promise<Contact[]> => {
       return await this.contactsService.findActive();
     })
