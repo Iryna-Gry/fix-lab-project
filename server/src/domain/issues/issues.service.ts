@@ -1,8 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Issue } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import {
@@ -15,7 +13,7 @@ import {
 export class IssuesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Issue[]> {
+  public async findAll(): Promise<outputIssueSchema[]> {
     return await this.prisma.issue.findMany({
       include: {
         image: true,
@@ -29,7 +27,7 @@ export class IssuesService {
     });
   }
 
-  public async findAllActive(): Promise<Issue[]> {
+  public async findAllActive(): Promise<outputIssueSchema[]> {
     return await this.prisma.issue.findMany({
       where: {
         isActive: true
@@ -69,7 +67,7 @@ export class IssuesService {
     return issue;
   }
 
-  public async findById(id: string): Promise<Issue> {
+  public async findById(id: string): Promise<outputIssueSchema> {
     const issue = await this.prisma.issue.findUnique({
       where: {
         id
@@ -92,7 +90,7 @@ export class IssuesService {
     return issue;
   }
 
-  public async create(data: createIssueSchema): Promise<Issue> {
+  public async create(data: createIssueSchema): Promise<createIssueSchema> {
     const foundIssue = await this.prisma.issue.findFirst({
       where: {
         slug: data.slug
@@ -112,7 +110,7 @@ export class IssuesService {
     return issue;
   }
 
-  public async update(data: updateIssueSchema): Promise<Issue> {
+  public async update(data: updateIssueSchema): Promise<updateIssueSchema> {
     const { id, ...newData } = data;
     const issue = await this.findById(data.id);
 

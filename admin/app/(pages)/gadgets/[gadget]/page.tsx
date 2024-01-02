@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputBrandSchema } from 'server/src/domain/brands/schemas/brand.schema'
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
+import { outputIssueSchema } from 'server/src/domain/issues/schemas/issue.schema'
 import EditGadgetForm from '../(components)/EditGadgetForm '
 
 interface IContactAdminProps {
@@ -13,11 +16,11 @@ interface IContactAdminProps {
 export const dynamic = 'force-dynamic'
 
 const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const gadgetData = (await serverClient.gadgets.getById(
+  const gadgetData = (await serverClient.gadgets.getBySlug(
     params.gadget,
-  )) as Gadget
-  const issuesData = (await serverClient.issues.getAll()) as Issue[]
-  const brandsData = (await serverClient.brands.getAll()) as Brand[]
+  )) as outputGadgetSchema
+  const issuesData = (await serverClient.issues.getAll()) as outputIssueSchema[]
+  const brandsData = (await serverClient.brands.getAll()) as outputBrandSchema[]
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>

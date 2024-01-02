@@ -1,8 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Image } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import { imageSchema, uploadImageSchema } from './schemas/image.schema';
@@ -11,16 +9,16 @@ import { imageSchema, uploadImageSchema } from './schemas/image.schema';
 export class ImagesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Image[]> {
+  public async findAll(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany();
   }
-  public async findAllIcons(): Promise<Image[]> {
+  public async findAllIcons(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany({ where: { type: 'icon ' } });
   }
-  public async findAllPictures(): Promise<Image[]> {
+  public async findAllPictures(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany({ where: { type: 'picture ' } });
   }
-  public async findAllBlog(): Promise<Image[]> {
+  public async findAllBlog(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany({ where: { type: 'blog ' } });
   }
 
@@ -42,14 +40,14 @@ export class ImagesService {
     return image;
   }
 
-  public async upload(data: uploadImageSchema): Promise<imageSchema> {
+  public async upload(data: uploadImageSchema): Promise<uploadImageSchema> {
     const createdImage = await this.prisma.image.create({ data });
     const image = await this.findById(createdImage.id);
 
     return image;
   }
 
-  public async update(data: imageSchema): Promise<imageSchema> {
+  public async update(data: imageSchema): Promise<uploadImageSchema> {
     const { id, ...newData } = data;
     await this.findById(id);
 

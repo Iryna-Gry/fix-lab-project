@@ -1,14 +1,15 @@
 'use client'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import RenderMarkdown from '../../(components)/RenderMarkdown'
 
-export interface IPreviewArticleProps {
-  articleData: Article
-}
-
-const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
+const PreviewArticlePage = ({
   articleData,
+}: {
+  articleData: Awaited<
+    ReturnType<(typeof serverClient)['articles']['getBySlug']>
+  >
 }) => {
   return (
     <section className=' bg-white-dis overflow-hidden p-4  shadow-2xl'>

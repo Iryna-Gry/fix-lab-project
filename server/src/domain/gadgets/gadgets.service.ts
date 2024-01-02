@@ -1,8 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Gadget } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import {
@@ -15,7 +13,7 @@ import {
 export class GadgetsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Gadget[]> {
+  public async findAll(): Promise<outputGadgetSchema[]> {
     return await this.prisma.gadget.findMany({
       include: {
         icon: true,
@@ -26,6 +24,7 @@ export class GadgetsService {
         },
         issues: {
           include: {
+            image: true,
             benefits: {
               include: {
                 icon: true
@@ -38,7 +37,7 @@ export class GadgetsService {
     });
   }
 
-  public async findAllActive(): Promise<Gadget[]> {
+  public async findAllActive(): Promise<outputGadgetSchema[]> {
     return await this.prisma.gadget.findMany({
       where: {
         isActive: true
@@ -96,7 +95,7 @@ export class GadgetsService {
     return gadget;
   }
 
-  public async findById(id: string): Promise<Gadget> {
+  public async findById(id: string): Promise<outputGadgetSchema> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -131,7 +130,7 @@ export class GadgetsService {
     return gadget;
   }
 
-  public async create(data: createGadgetSchema): Promise<Gadget> {
+  public async create(data: createGadgetSchema): Promise<createGadgetSchema> {
     const foundGadget = await this.prisma.gadget.findFirst({
       where: { slug: data.slug }
     });
@@ -148,7 +147,7 @@ export class GadgetsService {
     return gadget;
   }
 
-  public async update(data: updateGadgetSchema): Promise<Gadget> {
+  public async update(data: updateGadgetSchema): Promise<updateGadgetSchema> {
     const { id, ...newData } = data;
     const gadget = await this.findById(id);
 

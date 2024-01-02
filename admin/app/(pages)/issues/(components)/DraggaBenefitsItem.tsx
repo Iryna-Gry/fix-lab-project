@@ -1,20 +1,19 @@
-'use client'
-
 import { useSortable } from '@dnd-kit/sortable'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
-
-interface DraggableBenefitsItemProps {
-  id: string
-  item: Benefit
-  onRemove: (item: Benefit) => void
-}
 
 export function DraggableBenefitsItem({
   id,
   item,
   onRemove,
-}: DraggableBenefitsItemProps) {
+}: {
+  id: string
+  item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>
+  onRemove: (
+    item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>,
+  ) => void
+}) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id })
 

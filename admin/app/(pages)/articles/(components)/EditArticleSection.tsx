@@ -7,19 +7,20 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 
-interface IEditArticleProps {
-  articleData: Article
-  allImagesData: Image[]
-}
-
-const EditArticleSection: React.FC<IEditArticleProps> = ({
+const EditArticleSection = ({
   articleData,
   allImagesData,
+}: {
+  articleData: Awaited<
+    ReturnType<(typeof serverClient)['articles']['getBySlug']>
+  >
+  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
 }) => {
   const router = useRouter()
   const [newArticleData, setNewArticleData] = useLocalStorage(
@@ -32,6 +33,10 @@ const EditArticleSection: React.FC<IEditArticleProps> = ({
     `editNewArticle${articleData.id}`,
     articleData.text || '',
   )
+  const [altImage, setAltImage] = useLocalStorage<string | ''>(
+    `editNewImageAlt${articleData.id}`,
+    '',
+  )
 
   const clearState = () => {
     setNewArticleData({ ...newArticleData })
@@ -39,7 +44,6 @@ const EditArticleSection: React.FC<IEditArticleProps> = ({
       setSelectedImage(null)
     }
     setNewImage(null)
-    setNewArticle(newArticle)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,18 +94,64 @@ const EditArticleSection: React.FC<IEditArticleProps> = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    if (
+      !(
+        newArticleData.title &&
+        newArticleData.slug &&
+        newArticleData.preview &&
+        newArticleData.image.id &&
+        newArticleData.text &&
+        newArticleData.metadata.description &&
+        newArticleData.metadata.keywords &&
+        newArticleData.metadata.title
+      )
+    ) {
+      toast.error(`Всі поля повинні бути заповнені...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      return
+    } else {
+      if (selectedImage) {
+        const uploadResponse = await handleImageUpload()
 
-    if (selectedImage) {
-      const uploadResponse = await handleImageUpload()
-
-      if (uploadResponse?.data.id) {
-        await updateArticle.mutateAsync({
+        if (uploadResponse?.data.id) {
+          await updateArticle.mutateAsync({
+            isActive: true,
+            id: newArticleData.id,
+            slug: newArticleData.slug,
+            title: newArticleData.title,
+            text: newArticleData.text,
+            image_id: uploadResponse.data.id,
+            preview: newArticleData.preview,
+            metadata: {
+              title: newArticleData.metadata.title,
+              description: newArticleData.metadata.title,
+              keywords: newArticleData.metadata.title,
+            },
+          })
+          await deleteImage.mutateAsync(articleData.image.id)
+        } else {
+          await deleteImage.mutateAsync(uploadResponse?.data.id)
+          toast.error(`Помилка оновлення статті...`, {
+            style: {
+              borderRadius: '10px',
+              background: 'red',
+              color: '#fff',
+            },
+          })
+        }
+      } else {
+        updateArticle.mutate({
           isActive: true,
           id: newArticleData.id,
           slug: newArticleData.slug,
           title: newArticleData.title,
           text: newArticleData.text,
-          image_id: uploadResponse.data.id,
+          image_id: articleData.image.id,
           preview: newArticleData.preview,
           metadata: {
             title: newArticleData.metadata.title,
@@ -109,32 +159,7 @@ const EditArticleSection: React.FC<IEditArticleProps> = ({
             keywords: newArticleData.metadata.title,
           },
         })
-        await deleteImage.mutateAsync(articleData.image.id)
-      } else {
-        await deleteImage.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Помилка оновлення статті...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
-          },
-        })
       }
-    } else {
-      updateArticle.mutate({
-        isActive: true,
-        id: newArticleData.id,
-        slug: newArticleData.slug,
-        title: newArticleData.title,
-        text: newArticleData.text,
-        image_id: articleData.image.id,
-        preview: newArticleData.preview,
-        metadata: {
-          title: newArticleData.metadata.title,
-          description: newArticleData.metadata.title,
-          keywords: newArticleData.metadata.title,
-        },
-      })
     }
   }
 
@@ -156,16 +181,31 @@ const EditArticleSection: React.FC<IEditArticleProps> = ({
 
   const handleImageUpload = async () => {
     try {
-      if (selectedImage) {
+      if (selectedImage && altImage) {
         const response = await uploadImg({
           fileInput: selectedImage,
-          alt: articleData.image.alt || 'Article',
+          alt: altImage,
           type: articleData.image.type || 'picture',
         })
         return response
+      } else {
+        toast.error(`Відсутнє зображення, або його опис...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
+        return null
       }
-      return null
     } catch (error) {
+      toast.error(`Помилка завантаження зображення...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
       throw new Error('Error uploading image')
     }
   }
@@ -206,6 +246,19 @@ const EditArticleSection: React.FC<IEditArticleProps> = ({
               accept='image/*'
               onChange={handleImageChange}
             />
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+              Опис зображення(alt)
+              <input
+                required
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                type='text'
+                name='altImage'
+                value={altImage}
+                onChange={e => {
+                  setAltImage(e.target.value)
+                }}
+              />
+            </label>
           </div>
           <div className='flex w-[400px] flex-col'>
             <p className=' bold font-exo_2 mt-2 text-center text-xl'>

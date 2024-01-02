@@ -1,11 +1,14 @@
 import { useSortable } from '@dnd-kit/sortable'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
 
 interface DraggableBrandItemProps {
   id: string
-  item: Brand
-  onRemove: (item: Brand) => void
+  item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>
+  onRemove: (
+    item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>,
+  ) => void
 }
 
 export function DraggableBrandItem({

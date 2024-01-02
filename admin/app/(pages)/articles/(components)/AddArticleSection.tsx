@@ -11,13 +11,16 @@ import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
-interface IAddArticleProps {
-  allImagesData: Image[]
-}
-const AddArticleSection: React.FC<IAddArticleProps> = ({ allImagesData }) => {
+
+const AddArticleSection = ({
+  allImagesData,
+}: {
+  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+}) => {
   const router = useRouter()
   const [seoContent, setSeoContent] = useLocalStorage<{
     title: string
@@ -164,16 +167,30 @@ const AddArticleSection: React.FC<IAddArticleProps> = ({ allImagesData }) => {
 
   const handleImageUpload = async () => {
     try {
-      if (selectedImage) {
+      if (selectedImage && altImage) {
         const response = await uploadImg({
           fileInput: selectedImage,
-          alt: altImage,
+          alt: altImage || 'article',
           type: 'picture',
         })
         return response
       }
+      toast.error(`Відсутнє зображення, або його опис...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
       return null
     } catch (error) {
+      toast.error(`Помилка завантаження зображення...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
       throw new Error('Error uploading image')
     }
   }

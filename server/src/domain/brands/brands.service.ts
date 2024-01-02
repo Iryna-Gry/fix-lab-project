@@ -5,8 +5,6 @@ import {
 } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Brand } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import {
@@ -19,13 +17,13 @@ import {
 export class BrandsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Brand[]> {
+  public async findAll(): Promise<outputBrandSchema[]> {
     return await this.prisma.brand.findMany({
       include: { icon: true }
     });
   }
 
-  public async findActive(): Promise<Brand[]> {
+  public async findActive(): Promise<outputBrandSchema[]> {
     return await this.prisma.brand.findMany({
       where: { isActive: true },
       include: { icon: true }
@@ -45,7 +43,7 @@ export class BrandsService {
     return brand;
   }
 
-  public async findById(id: string): Promise<Brand> {
+  public async findById(id: string): Promise<outputBrandSchema> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -62,7 +60,7 @@ export class BrandsService {
     return brand;
   }
 
-  public async create(data: createBrandSchema): Promise<Brand> {
+  public async create(data: createBrandSchema): Promise<createBrandSchema> {
     const foundBrand = await this.prisma.brand.findFirst({
       where: { slug: data.slug }
     });
@@ -79,7 +77,7 @@ export class BrandsService {
     return brand;
   }
 
-  public async update(data: updateBrandSchema): Promise<Brand> {
+  public async update(data: updateBrandSchema): Promise<updateBrandSchema> {
     const { id, ...newData } = data;
     const brand = await this.findById(data.id);
 

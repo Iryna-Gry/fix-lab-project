@@ -20,48 +20,48 @@ import {
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { DraggableBenefitsItem } from './DraggaBenefitsItem'
 
-interface IBenefitsProps {
-  newIssueData: Issue
-  benefitsData: Benefit[]
-  setNewIssueData: (data: Issue) => void
-}
-
-const EditBenefitsList: React.FC<IBenefitsProps> = ({
+const EditBenefitsList = ({
   newIssueData,
   benefitsData,
   setNewIssueData,
+}: {
+  newIssueData: Awaited<
+    ReturnType<(typeof serverClient)['issues']['getBySlug']>
+  >
+  benefitsData: Awaited<ReturnType<(typeof serverClient)['benefits']['getAll']>>
+  setNewIssueData: (
+    data: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>,
+  ) => void
 }) => {
-  const [filteredBenefitsData, setFilteredBenefitsData] = useState<Benefit[]>(
+  const [filteredBenefitsData, setFilteredBenefitsData] = useState(
     benefitsData.filter(
       item => !newIssueData.benefits.some(issue => issue.id === item.id),
     ),
   )
 
-  const handleAddBenefitItemClick = (item: Benefit) => {
-    // Clone the existing array to avoid mutating state directly
+  const handleAddBenefitItemClick = (
+    item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>,
+  ) => {
     const updatedSelectedBenefitsArray = [...newIssueData.benefits]
 
-    // Check if the item is already in the array based on its id
     const index = updatedSelectedBenefitsArray.findIndex(
       selectedIssue => selectedIssue.id === item.id,
     )
 
-    // If it's not in the array, add it; otherwise, remove it
     if (index === -1) {
       updatedSelectedBenefitsArray.push(item)
     } else {
       updatedSelectedBenefitsArray.splice(index, 1)
     }
 
-    // Update the state with the new array
     setNewIssueData({
       ...newIssueData,
       benefits: updatedSelectedBenefitsArray,
     })
 
-    // Remove the selected item from the filteredBenefitsData array
     setFilteredBenefitsData(prevFilteredBenefitsData =>
       prevFilteredBenefitsData.filter(
         filteredIssue => filteredIssue.id !== item.id,
@@ -69,36 +69,32 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
     )
   }
 
-  const handleRemoveBenefitItemClick = (item: Benefit) => {
-    // Clone the existing array to avoid mutating state directly
+  const handleRemoveBenefitItemClick = (
+    item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>,
+  ) => {
     const updatedSelectedBenefitsArray = [...newIssueData.benefits]
 
-    // Check if the item is already in the array based on its id
     const index = updatedSelectedBenefitsArray.findIndex(
       selectedIssue => selectedIssue.id === item.id,
     )
 
-    // If it's not in the array, add it; otherwise, remove it
     if (index === -1) {
       updatedSelectedBenefitsArray.push(item)
     } else {
       updatedSelectedBenefitsArray.splice(index, 1)
     }
 
-    // Remove the selected item from the filteredBenefitsData array
     setFilteredBenefitsData(prevFilteredBenefitsData =>
       prevFilteredBenefitsData.filter(
         filteredIssue => filteredIssue.id !== item.id,
       ),
     )
 
-    // Update the state with the new array of selected benefits
     setNewIssueData({
       ...newIssueData,
       benefits: updatedSelectedBenefitsArray,
     })
 
-    // Update the filteredBenefitsData array based on the remaining benefitsData
     setFilteredBenefitsData(
       benefitsData.filter(
         benefit =>

@@ -7,22 +7,21 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { useRouter } from 'next/navigation'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 import EditBenefitsList from './EditBenefitsList'
 
-interface IIssueProps {
-  issueData: Issue
-  benefitsData: Benefit[]
-  allImagesData: Image[]
-}
-
-const EditIssuesForm: React.FC<IIssueProps> = ({
+const EditIssuesForm = ({
   issueData,
   benefitsData,
   allImagesData,
+}: {
+  issueData: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>
+  benefitsData: Awaited<ReturnType<(typeof serverClient)['benefits']['getAll']>>
+  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
 }) => {
   const router = useRouter()
 

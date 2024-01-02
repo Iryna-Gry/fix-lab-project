@@ -1,7 +1,8 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
 import EditContactForm from '../(components)/EditContactForm '
 
 interface IContactAdminProps {
@@ -10,13 +11,12 @@ interface IContactAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const ContactPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const url = `/contacts/${params.contact}`
-
-  const contactData = await getData(url)
+  const contactData = (await serverClient.contacts.getById(
+    params.contact,
+  )) as outputContactSchema
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>

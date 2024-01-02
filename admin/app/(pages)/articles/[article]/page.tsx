@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputArticleSchema } from 'server/src/domain/articles/schemas/article.schema'
 import PreviewArticlePage from '../(components)/PreviewArticlePage'
 
 interface IArticleAdminProps {
@@ -15,7 +16,7 @@ export const dynamic = 'force-dynamic'
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
   const articleData = (await serverClient.articles.getBySlug(
     params.article,
-  )) as Article
+  )) as outputArticleSchema
 
   return (
     <main>

@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Article, Image } from '@prisma/client';
+import { Article } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { imageSchema } from '../images/schemas/image.schema';
 import {
   createArticleSchema,
   outputArticleSchema,
@@ -17,7 +18,7 @@ import {
 export class ArticlesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Article[]> {
+  public async findAll(): Promise<outputArticleSchema[]> {
     return await this.prisma.article.findMany({
       include: {
         image: true
@@ -35,7 +36,7 @@ export class ArticlesService {
       totalPages: 0,
       rangeStart: 0,
       rangeEnd: 0,
-      items: [] as (Article & { image: Image })[]
+      items: [] as (Article & { image: imageSchema })[]
     };
 
     const totalArticles = await this.prisma.article.findMany();
@@ -76,7 +77,7 @@ export class ArticlesService {
     return article;
   }
 
-  public async findById(id: string): Promise<Article> {
+  public async findById(id: string): Promise<outputArticleSchema> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -84,6 +85,9 @@ export class ArticlesService {
     const article = await this.prisma.article.findUnique({
       where: {
         id
+      },
+      include: {
+        image: true
       }
     });
 
@@ -94,7 +98,7 @@ export class ArticlesService {
     return article;
   }
 
-  public async create(dto: createArticleSchema): Promise<Article> {
+  public async create(dto: createArticleSchema): Promise<createArticleSchema> {
     const foundArticle = await this.prisma.article.findUnique({
       where: {
         slug: dto.slug
@@ -115,7 +119,7 @@ export class ArticlesService {
     return article;
   }
 
-  public async update(dto: updateArticleSchema): Promise<Article> {
+  public async update(dto: updateArticleSchema): Promise<updateArticleSchema> {
     const { id, ...newData } = dto;
 
     await this.findById(id as string);

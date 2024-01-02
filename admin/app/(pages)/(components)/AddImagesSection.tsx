@@ -6,6 +6,7 @@ import 'swiper/css/pagination'
 
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -16,10 +17,11 @@ import { IoMdAddCircle } from 'react-icons/io'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-interface IAllImagesProps {
-  allImagesData: Image[]
-}
-const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
+const AddImagesSection = ({
+  allImagesData,
+}: {
+  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+}) => {
   const router = useRouter()
 
   const [altImage, setAltImage] = useState<string | ''>('')
@@ -92,7 +94,9 @@ const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
     }
   }
 
-  const reversedImagesData: Image[] = [...allImagesData].reverse()
+  const reversedImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAll']>
+  > = [...allImagesData].reverse()
 
   return (
     <Accordion

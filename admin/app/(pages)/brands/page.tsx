@@ -1,4 +1,6 @@
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputBrandSchema } from 'server/src/domain/brands/schemas/brand.schema'
+import { imageSchema } from 'server/src/domain/images/schemas/image.schema'
 import EmptySection from '../(components)/EmptySection'
 import AddBrandForm from './(components)/AddBrandForm'
 import BrandsList from './(components)/BrandsList'
@@ -6,8 +8,8 @@ import BrandsList from './(components)/BrandsList'
 export const dynamic = 'force-dynamic'
 
 const BrandsPage = async () => {
-  const brandsData = (await serverClient.brands.getAll()) as Brand[]
-  const allImagesData = (await serverClient.images.getAll()) as Image[]
+  const brandsData = (await serverClient.brands.getAll()) as outputBrandSchema[]
+  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
 
   return (
     <main>

@@ -69,7 +69,7 @@ const AddBenefitForm = () => {
       const uploadResponse = await handleImageUpload()
       if (uploadResponse?.status === 201) {
         createBenefit.mutate({
-          icon_id: '6528ff26458999afd6a05c48',
+          icon_id: uploadResponse.data.id,
           title: benefitTitle,
         })
       } else {

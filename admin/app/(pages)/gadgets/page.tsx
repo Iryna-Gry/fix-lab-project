@@ -1,16 +1,12 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import { GadgetsList } from './(components)/GadgetsList'
 
-// export const runtime = 'edge'
-// export const revalidate = 3600
 export const dynamic = 'force-dynamic'
 
 const GadgetsPage = async () => {
-  // const url = '/gadgets/all'
-  // const gadgetsData = await getData(url)
-  const gadgetsData = (await serverClient.gadgets.getAll()) as Gadget[]
+  const gadgetsData =
+    (await serverClient.gadgets.getAll()) as outputGadgetSchema[]
   return (
     <main className='flex flex-auto'>
       <section className=' bg-footer-gradient-linear-blue flex w-full justify-center py-[60px]'>

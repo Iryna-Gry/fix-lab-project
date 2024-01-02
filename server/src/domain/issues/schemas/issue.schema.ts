@@ -43,7 +43,8 @@ export const outputIssueSchema = z.object({
   image: imageSchema,
   benefits: z.array(outputBenefitSchema),
   image_id: z.string(),
-  benefits_ids: z.array(z.string())
+  benefits_ids: z.array(z.string()),
+  gadgets_ids: z.array(z.string())
 });
 
 export type createIssueSchema = z.TypeOf<typeof createIssueSchema>;

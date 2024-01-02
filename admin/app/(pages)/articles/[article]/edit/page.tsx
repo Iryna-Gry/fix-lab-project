@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputArticleSchema } from 'server/src/domain/articles/schemas/article.schema'
+import { imageSchema } from 'server/src/domain/images/schemas/image.schema'
 import EditArticleSection from '../../(components)/EditArticleSection'
 
 interface IArticleAdminProps {
@@ -15,8 +17,8 @@ export const dynamic = 'force-dynamic'
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
   const articleData = (await serverClient.articles.getBySlug(
     params.article,
-  )) as Article
-  const allImagesData = (await serverClient.images.getAll()) as Image[]
+  )) as outputArticleSchema
+  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
 
   return (
     <main>

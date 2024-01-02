@@ -1,8 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Contact } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import {
@@ -15,7 +13,7 @@ import {
 export class ContactsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Contact[]> {
+  public async findAll(): Promise<outputContactSchema[]> {
     const contacts = await this.prisma.contact.findMany({
       include: { image: true }
     });
@@ -33,7 +31,7 @@ export class ContactsService {
     return contacts;
   }
 
-  public async findById(id: string): Promise<Contact> {
+  public async findById(id: string): Promise<outputContactSchema> {
     const contact = await this.prisma.contact.findUnique({
       where: { id },
       include: { image: true }
@@ -46,13 +44,13 @@ export class ContactsService {
     return contact;
   }
 
-  public async create(data: createContactSchema): Promise<Contact> {
+  public async create(data: createContactSchema): Promise<createContactSchema> {
     const createdContact = await this.prisma.contact.create({ data });
     const contact = await this.findById(createdContact.id);
     return contact;
   }
 
-  public async update(data: updateContactSchema): Promise<Contact> {
+  public async update(data: updateContactSchema): Promise<updateContactSchema> {
     const { id, ...newData } = data;
 
     const contact = await this.findById(id);

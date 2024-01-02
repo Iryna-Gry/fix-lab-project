@@ -17,48 +17,49 @@ import {
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { DraggableIssueItem } from './DraggableIssueItem'
 
-interface IssuesProps {
-  newGadgetData: Gadget
-  issuesData: Issue[]
-  setNewGadgetData: (data: Gadget) => void
-}
-
-const EditIssuesList: React.FC<IssuesProps> = ({
+const EditIssuesList = ({
   newGadgetData,
   issuesData,
   setNewGadgetData,
+}: {
+  newGadgetData: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
+  issuesData: Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
+  setNewGadgetData: (
+    data: Awaited<ReturnType<(typeof serverClient)['gadgets']['getBySlug']>>,
+  ) => void
 }) => {
-  const [filteredIssuesData, setFilteredIssuesData] = useState<Issue[]>(
+  const [filteredIssuesData, setFilteredIssuesData] = useState<
+    Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
+  >(
     issuesData.filter(
       item => !newGadgetData.issues.some(issue => issue.id === item.id),
     ),
   )
-
-  const handleAddIssueItemClick = (item: Issue) => {
-    // Clone the existing array to avoid mutating state directly
+  const handleAddIssueItemClick = (
+    item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>,
+  ) => {
     const updatedSelectedIssuesArray = [...newGadgetData.issues]
 
-    // Check if the item is already in the array based on its id
     const index = updatedSelectedIssuesArray.findIndex(
       selectedIssue => selectedIssue.id === item.id,
     )
 
-    // If it's not in the array, add it; otherwise, remove it
     if (index === -1) {
       updatedSelectedIssuesArray.push(item)
     } else {
       updatedSelectedIssuesArray.splice(index, 1)
     }
 
-    // Update the state with the new array
     setNewGadgetData({
       ...newGadgetData,
       issues: updatedSelectedIssuesArray,
     })
 
-    // Remove the selected item from the filteredIssuesData array
     setFilteredIssuesData(prevFilteredIssuesData =>
       prevFilteredIssuesData.filter(
         filteredIssue => filteredIssue.id !== item.id,
@@ -66,36 +67,34 @@ const EditIssuesList: React.FC<IssuesProps> = ({
     )
   }
 
-  const handleRemoveIssueItemClick = (clickedIssue: Issue) => {
-    // Clone the existing array to avoid mutating state directly
+  const handleRemoveIssueItemClick = (
+    clickedIssue: Awaited<
+      ReturnType<(typeof serverClient)['issues']['getBySlug']>
+    >,
+  ) => {
     const updatedSelectedIssuesArray = [...newGadgetData.issues]
 
-    // Check if the item is already in the array based on its id
     const index = updatedSelectedIssuesArray.findIndex(
       selectedIssue => selectedIssue.id === clickedIssue.id,
     )
 
-    // If it's not in the array, add it; otherwise, remove it
     if (index === -1) {
       updatedSelectedIssuesArray.push(clickedIssue)
     } else {
       updatedSelectedIssuesArray.splice(index, 1)
     }
 
-    // Remove the selected item from the filteredIssuesData array
     setFilteredIssuesData(prevFilteredIssuesData =>
       prevFilteredIssuesData.filter(
         filteredIssue => filteredIssue.id !== clickedIssue.id,
       ),
     )
 
-    // Update the state with the new array of selected issues
     setNewGadgetData({
       ...newGadgetData,
       issues: updatedSelectedIssuesArray,
     })
 
-    // Update the filteredIssuesData array based on the remaining issuesData
     setFilteredIssuesData(
       issuesData.filter(
         item =>

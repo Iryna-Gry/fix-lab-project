@@ -1,8 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Benefit } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import {
@@ -15,7 +13,7 @@ import {
 export class BenefitsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Benefit[]> {
+  public async findAll(): Promise<outputBenefitSchema[]> {
     return await this.prisma.benefit.findMany({
       include: { icon: true }
     });
@@ -28,7 +26,7 @@ export class BenefitsService {
     });
   }
 
-  public async findById(id: string): Promise<Benefit> {
+  public async findById(id: string): Promise<outputBenefitSchema> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -45,7 +43,7 @@ export class BenefitsService {
     return benefit;
   }
 
-  public async create(data: createBenefitSchema): Promise<Benefit> {
+  public async create(data: createBenefitSchema): Promise<createBenefitSchema> {
     const foundBenefit = await this.prisma.benefit.findFirst({
       where: { title: data.title }
     });
@@ -61,7 +59,7 @@ export class BenefitsService {
     return benefit;
   }
 
-  public async update(data: updateBenefitSchema): Promise<Benefit> {
+  public async update(data: updateBenefitSchema): Promise<updateBenefitSchema> {
     const { id, ...newData } = data;
     const benefit = await this.findById(id);
 

@@ -15,48 +15,53 @@ import {
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import Image from 'next/image'
 import { DraggableBrandItem } from './DraggableBrandItem'
 
-interface IBrandsProps {
-  newGadgetData: Gadget
-  brandsData: Brand[]
-  setNewGadgetData: (data: Gadget) => void
-}
-
-const EditBrandsList: React.FC<IBrandsProps> = ({
+const EditBrandsList = ({
   brandsData,
   newGadgetData,
   setNewGadgetData,
+}: {
+  newGadgetData: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
+  brandsData: Awaited<
+    ReturnType<(typeof serverClient)['brands']['getAllPublished']>
+  >
+  setNewGadgetData: (
+    data: Awaited<ReturnType<(typeof serverClient)['gadgets']['getBySlug']>>,
+  ) => void
 }) => {
-  const [filteredBrandsData, setFilteredBrandsData] = useState<Brand[]>(
+  const [filteredBrandsData, setFilteredBrandsData] = useState<
+    Awaited<ReturnType<(typeof serverClient)['brands']['getAllPublished']>>
+  >(
     brandsData.filter(
       item => !newGadgetData.brands.some(brand => brand.id === item.id),
     ),
   )
 
-  const handleAddBrandItemClick = (item: Brand) => {
-    // Clone the existing array to avoid mutating state directly
+  const handleAddBrandItemClick = (
+    item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>,
+  ) => {
     const updatedSelectedBrandsArray = [...newGadgetData.brands]
 
-    // Check if the item is already in the array based on its id
     const index = updatedSelectedBrandsArray.findIndex(
       selectedBrand => selectedBrand.id === item.id,
     )
 
-    // If it's not in the array, add it; otherwise, remove it
     if (index === -1) {
       updatedSelectedBrandsArray.push(item)
     } else {
       updatedSelectedBrandsArray.splice(index, 1)
     }
 
-    // Update the state with the new array
     setNewGadgetData({
       ...newGadgetData,
       brands: updatedSelectedBrandsArray,
     })
 
-    // Remove the selected item from the filteredBrandsData array
     setFilteredBrandsData(prevFilteredBrandsData =>
       prevFilteredBrandsData.filter(
         filteredBrand => filteredBrand.id !== item.id,
@@ -64,23 +69,23 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
     )
   }
 
-  const handleRemoveBrandItemClick = (clickedBrand: Brand) => {
-    // Clone the existing array to avoid mutating state directly
+  const handleRemoveBrandItemClick = (
+    clickedBrand: Awaited<
+      ReturnType<(typeof serverClient)['brands']['getBySlug']>
+    >,
+  ) => {
     const updatedSelectedBrandsArray = [...newGadgetData.brands]
 
-    // Check if the item is already in the array based on its id
     const index = updatedSelectedBrandsArray.findIndex(
       selectedBrand => selectedBrand.id === clickedBrand.id,
     )
 
-    // If it's not in the array, add it; otherwise, remove it
     if (index === -1) {
       updatedSelectedBrandsArray.push(clickedBrand)
     } else {
       updatedSelectedBrandsArray.splice(index, 1)
     }
 
-    // Remove the selected item from the filteredBrandsData array
     setFilteredBrandsData(prevFilteredBrandsData =>
       prevFilteredBrandsData.filter(
         filteredBrand => filteredBrand.id !== clickedBrand.id,
@@ -168,15 +173,15 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
               key={item.id}
             >
               <div className='flex items-center gap-2 p-4'>
-                {/* {item.icon && (
+                {item.icon && (
                   <Image
                     className='h-[40px] w-[40px] object-center opacity-100'
                     alt={item.icon?.alt || item.title}
-                    src={item.icon.src}
+                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${item.icon.file.filename}`}
                     width={0}
                     height={0}
                   />
-                )} */}
+                )}
                 <p className='font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg '>
                   {item?.title || 'No title'}
                 </p>

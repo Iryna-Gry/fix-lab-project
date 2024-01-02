@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputBenefitSchema } from 'server/src/domain/benefits/schemas/benefit.schema'
+import { imageSchema } from 'server/src/domain/images/schemas/image.schema'
+import { outputIssueSchema } from 'server/src/domain/issues/schemas/issue.schema'
 import EditIssuesForm from '../(components)/EditIssueForm '
 
 interface IIssueAdminProps {
@@ -13,9 +16,12 @@ interface IIssueAdminProps {
 export const dynamic = 'force-dynamic'
 
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
-  const issueData = (await serverClient.issues.getBySlug(params.issue)) as Issue
-  const benefitsData = (await serverClient.benefits.getAll()) as Benefit[]
-  const allImagesData = (await serverClient.images.getAll()) as Image[]
+  const issueData = (await serverClient.issues.getBySlug(
+    params.issue,
+  )) as outputIssueSchema
+  const benefitsData =
+    (await serverClient.benefits.getAll()) as outputBenefitSchema[]
+  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
 
   return (
     <main className=' flex flex-auto'>

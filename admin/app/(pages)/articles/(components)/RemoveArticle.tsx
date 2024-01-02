@@ -1,16 +1,18 @@
 'use client'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-interface RemoveArticleProps {
-  item: Article
-}
-const RemoveArticle: React.FC<RemoveArticleProps> = ({ item }) => {
+const RemoveArticle = ({
+  item,
+}: {
+  item: Awaited<ReturnType<(typeof serverClient)['articles']['getById']>>
+}) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
@@ -49,9 +51,9 @@ const RemoveArticle: React.FC<RemoveArticleProps> = ({ item }) => {
     },
   })
 
-  const handleDeleteArticle = async (articleItem: Article) => {
-    removeArticle.mutate(articleItem.id)
-    toggleRemoveContainer(articleItem.id)
+  const handleDeleteArticle = async (itemId: string) => {
+    removeArticle.mutate(itemId)
+    toggleRemoveContainer(itemId)
   }
 
   useEffect(() => {
@@ -100,7 +102,7 @@ const RemoveArticle: React.FC<RemoveArticleProps> = ({ item }) => {
           <button
             aria-label='Видалити'
             type='button'
-            onClick={() => handleDeleteArticle(item)}
+            onClick={() => handleDeleteArticle(item.id)}
           >
             <AiOutlineCheckCircle
               className='hover:fill-white-dis focus:fill-white-dis transition-colors'

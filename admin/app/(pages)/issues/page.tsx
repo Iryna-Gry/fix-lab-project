@@ -1,6 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 
+import { imageSchema } from 'server/src/domain/images/schemas/image.schema'
+import { outputIssueSchema } from 'server/src/domain/issues/schemas/issue.schema'
 import EmptySection from '../(components)/EmptySection'
 import AddIssueInfoSection from './(components)/AddIssueInfoSection'
 import IssuesList from './(components)/IssuesList'
@@ -8,12 +9,12 @@ import IssuesList from './(components)/IssuesList'
 export const dynamic = 'force-dynamic'
 
 const IssuesPage = async () => {
-  const issuesData = (await serverClient.issues.getAll()) as Issue[]
-  const allImagesData = (await serverClient.images.getAll()) as Image[]
+  const issuesData = (await serverClient.issues.getAll()) as outputIssueSchema[]
+  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
 
   return (
-    <main className='flex flex-auto'>
-      <section className='bg-footer-gradient-linear-blue flex h-full  w-full overflow-hidden overflow-y-auto py-[60px]'>
+    <main>
+      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
         <div className='container relative flex flex-col gap-8 px-8'>
           {/* <AddIssueSection /> */}
           <AddIssueInfoSection allImagesData={allImagesData} />

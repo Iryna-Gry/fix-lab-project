@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { getSession } from 'next-auth/react'
 
 interface UploadFileParams {
   fileInput: File
@@ -9,16 +10,16 @@ interface UploadFileParams {
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
 const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   const url = `${apiUrl}/images/upload-${type}`
-  // const session = await getSession()
+  const session = await getSession()
 
-  // if (session?.user.token === undefined) {
-  //   throw new Error('Headers are undefined')
-  // }
+  if (session?.user.token === undefined) {
+    throw new Error('Headers are undefined')
+  }
 
   const config: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTFmMTNiZDQ4ZDUxZGY2OTMxY2QxMjYiLCJpYXQiOjE3MDM2ODc2NzR9.NcL0_Z1ygHwnlVy_fYXGb_294LkhDg4e-B6UobgFX9s`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg5OTBlZmFjNWRmNjcwNjU5YTA1MzgiLCJpYXQiOjE3MDM2ODg2MTl9.3C_gHBI41slAP7GDXs74Rw1NLNOrDF6vv9s2NyCLTY8`,
     },
   }
 

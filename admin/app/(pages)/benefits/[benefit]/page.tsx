@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { outputBenefitSchema } from 'server/src/domain/benefits/schemas/benefit.schema'
 import EditBenefitForm from '../(components)/EditBenefitForm '
 
 interface IArticleAdminProps {
@@ -15,7 +16,7 @@ export const dynamic = 'force-dynamic'
 const BenefitPage: React.FC<IArticleAdminProps> = async ({ params }) => {
   const benefitData = (await serverClient.benefits.getById(
     params.benefit,
-  )) as Benefit
+  )) as outputBenefitSchema
 
   return (
     <main>

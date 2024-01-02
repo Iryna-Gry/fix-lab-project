@@ -7,21 +7,20 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import SendButton from '../../(components)/SendButton'
 import EditBrandsList from './EditBrandsList'
 import EditIssuesList from './EditIssuesList'
 
-interface IGadgetProps {
-  gadgetData: Gadget
-  issuesData: Issue[]
-  brandsData: Brand[]
-}
-
-const EditGadgetForm: React.FC<IGadgetProps> = ({
+const EditGadgetForm = ({
   gadgetData,
   issuesData,
   brandsData,
+}: {
+  gadgetData: Awaited<ReturnType<(typeof serverClient)['gadgets']['getBySlug']>>
+  issuesData: Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
+  brandsData: Awaited<ReturnType<(typeof serverClient)['brands']['getAll']>>
 }) => {
   const router = useRouter()
   const [newGadgetData, setNewGadgetData] = useLocalStorage(
@@ -85,58 +84,76 @@ const EditGadgetForm: React.FC<IGadgetProps> = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-
-    if (selectedIcon) {
-      const uploadResponse = await handleImageUpload()
-      if (uploadResponse?.status === 201) {
-        if (uploadResponse.data) {
-          await updateGadget.mutateAsync({
-            isActive: true,
-            id: newGadgetData.id,
-            slug: newGadgetData.slug,
-            title: newGadgetData.title,
-            metadata: {
-              title: newGadgetData.metadata.title,
-              description: newGadgetData.metadata.title,
-              keywords: newGadgetData.metadata.title,
+    if (
+      !(
+        newGadgetData.title &&
+        newGadgetData.slug &&
+        newGadgetData.description &&
+        newGadgetData.icon.id &&
+        newGadgetData.metadata.description &&
+        newGadgetData.metadata.keywords &&
+        newGadgetData.metadata.title
+      )
+    ) {
+      toast.error(`Всі поля повинні бути заповнені...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      return
+    } else {
+      if (selectedIcon) {
+        const uploadResponse = await handleImageUpload()
+        if (uploadResponse?.status === 201) {
+          if (uploadResponse.data) {
+            await updateGadget.mutateAsync({
+              isActive: true,
+              id: newGadgetData.id,
+              slug: newGadgetData.slug,
+              title: newGadgetData.title,
+              metadata: {
+                title: newGadgetData.metadata.title,
+                description: newGadgetData.metadata.title,
+                keywords: newGadgetData.metadata.title,
+              },
+              description: newGadgetData.description,
+              icon_id: uploadResponse.data.id,
+              gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
+              issues_ids: newGadgetData.issues_ids.map(item => item) || [],
+              brands_ids: newGadgetData.brands_ids.map(item => item) || [],
+            })
+            await deleteIcon.mutateAsync(gadgetData.icon_id)
+          }
+        } else {
+          await deleteIcon.mutateAsync(uploadResponse?.data.id)
+          toast.error(`Виникла при оновлені гаджету...`, {
+            style: {
+              borderRadius: '10px',
+              background: 'red',
+              color: '#fff',
             },
-            description: newGadgetData.description,
-            icon_id: uploadResponse.data.id,
-            gallery_ids:
-              newGadgetData.gallery.map((item: { id: string }) => item.id) ||
-              [],
-            issues_ids: newGadgetData.issues.map(item => item.id) || [],
-            brands_ids: newGadgetData.brands.map(item => item.id) || [],
           })
-          await deleteIcon.mutateAsync(gadgetData.icon_id)
         }
       } else {
-        await deleteIcon.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Виникла при оновлені гаджету...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
+        updateGadget.mutate({
+          isActive: true,
+          id: newGadgetData.id,
+          slug: newGadgetData.slug,
+          title: newGadgetData.title,
+          metadata: {
+            title: newGadgetData.metadata.title,
+            description: newGadgetData.metadata.title,
+            keywords: newGadgetData.metadata.title,
           },
+          description: newGadgetData.description,
+          icon_id: gadgetData.icon_id || '',
+          gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
+          issues_ids: newGadgetData.issues_ids.map(item => item) || [],
+          brands_ids: newGadgetData.brands_ids.map(item => item) || [],
         })
       }
-    } else {
-      updateGadget.mutate({
-        isActive: true,
-        id: newGadgetData.id,
-        slug: newGadgetData.slug,
-        title: newGadgetData.title,
-        metadata: {
-          title: newGadgetData.metadata.title,
-          description: newGadgetData.metadata.title,
-          keywords: newGadgetData.metadata.title,
-        },
-        description: newGadgetData.description,
-        icon_id: gadgetData.icon.id || '',
-        gallery_ids: newGadgetData.gallery.map(item => item.id) || [],
-        issues_ids: newGadgetData.issues.map(item => item.id) || [],
-        brands_ids: newGadgetData.brands.map(item => item.id) || [],
-      })
     }
   }
 

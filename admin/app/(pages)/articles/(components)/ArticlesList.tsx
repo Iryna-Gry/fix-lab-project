@@ -1,18 +1,19 @@
 import Link from 'next/link'
 import { FaEdit, FaEye } from 'react-icons/fa'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import RemoveArticle from './RemoveArticle'
 
-interface ArticlesListProps {
-  articlesData: Article[]
-}
-
-const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
+const ArticlesList = ({
+  articlesData,
+}: {
+  articlesData: Awaited<ReturnType<(typeof serverClient)['articles']['getAll']>>
+}) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
       <div className=' flex w-full flex-col items-center justify-center gap-8'>
         <ul className='flex w-full flex-col shadow-2xl'>
-          {articlesData.map((item: Article) => (
+          {articlesData.map(item => (
             <li
               className='border-dark-blue bg-white-dis group border-b-[0.5px] opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
               key={item.id}

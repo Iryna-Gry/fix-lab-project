@@ -1,16 +1,18 @@
 'use client'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-interface RemoveBenefitProps {
-  item: Benefit
-}
-const RemoveBenefit: React.FC<RemoveBenefitProps> = ({ item }) => {
+const RemoveBenefit = ({
+  item,
+}: {
+  item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>
+}) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
@@ -26,7 +28,7 @@ const RemoveBenefit: React.FC<RemoveBenefitProps> = ({ item }) => {
   const deleteImage = trpc.images.remove.useMutation()
   const removeBenefit = trpc.benefits.remove.useMutation({
     onSuccess: async () => {
-      deleteImage.mutate(item.icon.id)
+      deleteImage.mutate(item.icon_id)
       router.refresh()
       toast.success(`Послугу сервісного обслуговування видалено!`, {
         style: {
@@ -48,9 +50,9 @@ const RemoveBenefit: React.FC<RemoveBenefitProps> = ({ item }) => {
     },
   })
 
-  const handleDeleteArticle = async (articleItem: Benefit) => {
-    removeBenefit.mutate(articleItem.id)
-    toggleRemoveContainer(articleItem.id)
+  const handleDeleteArticle = async (articleId: string) => {
+    removeBenefit.mutate(articleId)
+    toggleRemoveContainer(articleId)
   }
 
   useEffect(() => {
@@ -99,7 +101,7 @@ const RemoveBenefit: React.FC<RemoveBenefitProps> = ({ item }) => {
           <button
             aria-label='Видалити'
             type='button'
-            onClick={() => handleDeleteArticle(item)}
+            onClick={() => handleDeleteArticle(item.id)}
           >
             <AiOutlineCheckCircle
               className='hover:fill-white-dis focus:fill-white-dis transition-colors'

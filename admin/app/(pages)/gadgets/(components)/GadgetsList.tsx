@@ -1,22 +1,24 @@
 'use client'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export interface IGadgetsProps {
-  gadgetsData: Gadget[]
-}
-export const GadgetsList: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
+export const GadgetsList = ({
+  gadgetsData,
+}: {
+  gadgetsData: Awaited<ReturnType<(typeof serverClient)['gadgets']['getAll']>>
+}) => {
   return (
     <ul className='z-2 flex flex-wrap justify-center gap-2 max-xl:max-w-full xl:w-[954px] xl:gap-6'>
-      {gadgetsData.map((item: Gadget) => {
+      {gadgetsData.map(item => {
         return (
           <li
             key={item.id}
             className='group h-[261px] w-[302px] rounded-2xl bg-card-repair-gradient  md:w-[calc((100%-10px)/2)] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
-              href={`/gadgets/${item.id}`}
+              href={`/gadgets/${item.slug}`}
               className='flex w-full flex-col justify-between rounded-2xl pb-[23px] pl-[31px] pr-[21px] pt-[33px]  transition-colors delay-75 duration-300 ease-in-out hover:bg-dark-blue md:h-full xl:h-[261px]'
             >
               <div className='relative ml-auto h-[80px] w-full max-w-[104px]'>

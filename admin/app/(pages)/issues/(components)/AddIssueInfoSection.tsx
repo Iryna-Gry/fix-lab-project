@@ -11,15 +11,16 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
 
-interface IAddIssueProps {
-  allImagesData: Image[]
-}
-
-const AddIssueInfoSection: React.FC<IAddIssueProps> = ({ allImagesData }) => {
+const AddIssueInfoSection = ({
+  allImagesData,
+}: {
+  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+}) => {
   const router = useRouter()
 
   const [seoContent, setSeoContent] = useLocalStorage<{

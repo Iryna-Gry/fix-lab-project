@@ -1,16 +1,18 @@
 'use client'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-interface RemoveBrandProps {
-  item: Brand
-}
-const RemoveBrand: React.FC<RemoveBrandProps> = ({ item }) => {
+const RemoveBrand = ({
+  item,
+}: {
+  item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>
+}) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
@@ -26,8 +28,6 @@ const RemoveBrand: React.FC<RemoveBrandProps> = ({ item }) => {
 
   const removeBrandRemoveBrand = trpc.brands.remove.useMutation({
     onSuccess: async () => {
-      // const deleteImgUrl = `/images/${item.image_id}`
-      // await deleteData(deleteImgUrl)
       router.refresh()
       toast.success(`Бренд видалено!`, {
         style: {
@@ -49,7 +49,11 @@ const RemoveBrand: React.FC<RemoveBrandProps> = ({ item }) => {
     },
   })
 
-  const handleDeleteArticle = async (articleItem: Brand) => {
+  const handleDeleteArticle = async (
+    articleItem: Awaited<
+      ReturnType<(typeof serverClient)['brands']['getBySlug']>
+    >,
+  ) => {
     removeBrandRemoveBrand.mutate(articleItem.id)
     toggleRemoveContainer(articleItem.id)
   }

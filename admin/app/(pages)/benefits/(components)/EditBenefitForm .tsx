@@ -1,20 +1,20 @@
 'use client'
 
-import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import { useState } from 'react'
-
 import useLocalStorage from 'admin/app/(hooks)/useLocalStorage '
+import uploadImg from 'admin/app/(server)/api/service/admin/uploadImg'
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import SendButton from '../../(components)/SendButton'
 
-interface IAdminBenefitProps {
-  benefitData: Benefit
-}
-
-const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
+const EditBenefitForm = ({
+  benefitData,
+}: {
+  benefitData: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>
+}) => {
   const [newBenefitData, setNewBenefitData] = useLocalStorage(
     `editNewBenefitData${benefitData.id}`,
     {

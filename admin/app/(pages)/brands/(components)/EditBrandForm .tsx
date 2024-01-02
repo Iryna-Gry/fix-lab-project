@@ -1,24 +1,24 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 'use client'
 
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { useState } from 'react'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
+import AddImagesSection from '../../(components)/AddImagesSection'
 
-interface IAdminBrandProps {
-  brandData: Brand
-}
-
-const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
+const EditBrandForm = ({
+  brandData,
+  allImagesData,
+}: {
+  brandData: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>
+  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+}) => {
   const router = useRouter()
 
   const [newBrandData, setNewBrandData] = useState({ ...brandData })
@@ -159,50 +159,95 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
   }
 
   return (
-    <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
+    <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
       <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
-        <div className='flex w-[400px] flex-col'>
-          <div className='relative'>
-            {!newIcon ? (
-              brandData.icon && (
-                <Image
-                  className='h-auto w-[100px]  object-center'
-                  src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${brandData.icon.file.filename}`}
-                  width={100}
-                  height={100}
-                  alt={brandData?.icon.alt || ''}
-                />
-              )
-            ) : (
-              <div>
-                <Image
-                  className='h-[100px] w-[100px] object-center'
-                  src={typeof newIcon === 'string' ? newIcon : ''}
-                  width={100}
-                  height={100}
-                  alt={brandData.title}
+        <div className='flex w-full flex-col gap-8'>
+          <div className='flex justify-between gap-3 '>
+            <div className='flex flex-col gap-3'>
+              <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+                Іконка(.svg)
+              </p>
+              <div className='relative'>
+                {!newIcon ? (
+                  brandData.icon && (
+                    <Image
+                      className='max-h-[150px] w-[250px] object-contain object-center'
+                      src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${brandData.icon.file.filename}`}
+                      width={100}
+                      height={100}
+                      alt={brandData?.icon.alt || ''}
+                    />
+                  )
+                ) : (
+                  <div>
+                    <Image
+                      className='max-h-[150px] w-[250px] object-contain object-center'
+                      src={typeof newIcon === 'string' ? newIcon : ''}
+                      width={100}
+                      height={100}
+                      alt={brandData.title}
+                    />
+                  </div>
+                )}
+                <input
+                  className=' text-white-dis'
+                  id='icon'
+                  type='file'
+                  accept='icon/*'
+                  onChange={handleImageChange}
                 />
               </div>
-            )}
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                alt(Опис зображення)
+                <input
+                  required
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='altIcon'
+                  value={newBrandData.icon.alt || ''}
+                  onChange={handleInputChange}
+                />
+              </label>
+            </div>
+            <div className='flex w-[400px] flex-col justify-between'>
+              <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+                SEO налаштування
+              </p>
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                Seo title
+                <input
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='metadata'
+                  data-metadata-field='title'
+                  value={newBrandData.metadata.title || ''}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                Seo description
+                <input
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='metadata'
+                  data-metadata-field='description'
+                  value={newBrandData.metadata.description || ''}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                Seo keywords
+                <input
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='metadata'
+                  data-metadata-field='keywords'
+                  value={newBrandData.metadata.keywords || ''}
+                  onChange={handleInputChange}
+                />
+              </label>
+            </div>
           </div>
-          <input
-            className=' text-white-dis'
-            id='icon'
-            type='file'
-            accept='icon/*'
-            onChange={handleImageChange}
-          />
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            alt(Опис зображення)
-            <input
-              required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='altIcon'
-              value={newBrandData.icon.alt || ''}
-              onChange={handleInputChange}
-            />
-          </label>
           <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Заголовок
             <input
@@ -226,48 +271,10 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
             />
           </label>
         </div>
-        <div className='flex w-[400px] flex-col'>
-          <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-            SEO налаштування
-          </p>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Seo title
-            <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='metadata'
-              data-metadata-field='title'
-              value={newBrandData.metadata.title || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Seo description
-            <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='metadata'
-              data-metadata-field='description'
-              value={newBrandData.metadata.description || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Seo keywords
-            <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='metadata'
-              data-metadata-field='keywords'
-              value={newBrandData.metadata.keywords || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
       </form>
-      {/* <div className='w-full'>
-        <AddImagesSection />
-      </div> */}
+      <div className='w-full'>
+        <AddImagesSection allImagesData={allImagesData} />
+      </div>
       <div className='flex w-full flex-col justify-center gap-[50px]'>
         <div className='flex w-full flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>
