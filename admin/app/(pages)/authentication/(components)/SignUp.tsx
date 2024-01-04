@@ -1,14 +1,14 @@
 'use client'
 
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import type { FormEventHandler } from 'react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { ThreeCircles } from 'react-loader-spinner'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+// const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false)
@@ -21,13 +21,13 @@ const SignUp = () => {
 
     try {
       const formData = new FormData(event.currentTarget)
-      const res = await axios.post(`${apiUrl}/users`, {
-        name: formData.get('name'),
-        login: formData.get('login'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-        isActive: true,
-      })
+      const res = await axios.get(
+        `http://localhost:3000/api/users/init/6315413c-58c1-11ee-8c99-0242ac120002?isActive=${true}&login=${formData.get(
+          'login',
+        )}&email=${formData.get('email')}&password=${formData.get(
+          'password',
+        )}&name=${formData.get('name')}`,
+      )
 
       if (res.status === 201) {
         toast.success(`Адміна успішно зареєстровано!`, {

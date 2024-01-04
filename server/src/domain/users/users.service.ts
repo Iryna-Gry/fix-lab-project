@@ -9,11 +9,12 @@ import { Types } from 'mongoose';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { userSchema } from './schemas/user.schema';
+
 import { PasswordEncryptHelper } from '@helpers/password-encrypt.helper';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { userSchema } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {

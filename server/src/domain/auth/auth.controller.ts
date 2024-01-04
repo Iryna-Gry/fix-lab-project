@@ -7,8 +7,8 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from '@server/decorators/public.decorator';
 
-import { UsersService } from '@domain/users/users.service';
 import { AuthService } from './auth.service';
+import { UsersService } from '@domain/users/users.service';
 
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';

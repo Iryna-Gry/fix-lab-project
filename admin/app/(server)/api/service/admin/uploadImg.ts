@@ -15,11 +15,10 @@ const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   if (session?.user.token === undefined) {
     throw new Error('Headers are undefined')
   }
-
   const config: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg5OTBlZmFjNWRmNjcwNjU5YTA1MzgiLCJpYXQiOjE3MDM2ODg2MTl9.3C_gHBI41slAP7GDXs74Rw1NLNOrDF6vv9s2NyCLTY8`,
+      Authorization: `Bearer ${session.user.token}`,
     },
   }
 

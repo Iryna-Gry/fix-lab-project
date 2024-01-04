@@ -12,10 +12,10 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { userSchema } from './schemas/user.schema';
-
-import { NotificationsService } from '@domain/notifications/notifications.service';
 import { UsersService } from './users.service';
+import { NotificationsService } from '@domain/notifications/notifications.service';
+
+import { userSchema } from './schemas/user.schema';
 
 import { PasswordGeneratorHelper } from '@helpers/password-generator.helper';
 

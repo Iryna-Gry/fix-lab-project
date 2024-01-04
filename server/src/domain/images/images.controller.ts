@@ -12,7 +12,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { ImagesService } from './images.service';
 
-import { imageSchema, uploadImageSchema } from './schemas/image.schema';
+import { uploadImageSchema } from './schemas/image.schema';
 
 import { FileStorageHelper } from '@helpers/file-storage.helper';
 
@@ -40,7 +40,7 @@ export class ImagesController {
       })
     )
     file: Express.Multer.File
-  ): Promise<imageSchema> {
+  ): Promise<uploadImageSchema> {
     const pictureData = {
       file: file,
       alt: body.alt,
@@ -69,7 +69,7 @@ export class ImagesController {
       })
     )
     file: Express.Multer.File
-  ): Promise<imageSchema> {
+  ): Promise<uploadImageSchema> {
     const pictureData = {
       file: file,
       alt: body.alt,
@@ -98,7 +98,7 @@ export class ImagesController {
       })
     )
     file: Express.Multer.File
-  ): Promise<imageSchema> {
+  ): Promise<uploadImageSchema> {
     const pictureData = {
       file: file,
       alt: body.alt,

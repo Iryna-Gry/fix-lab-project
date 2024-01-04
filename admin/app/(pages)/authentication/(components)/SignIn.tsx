@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { signIn, useSession } from 'next-auth/react'
+import Link from 'next/link'
 import type { FormEventHandler } from 'react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -23,8 +23,8 @@ const SignIn = () => {
         callbackUrl: '/',
       })
 
-      if (res && !res.error) {
-        toast.success(`Вітаємо в FixLab Admin Panel!`, {
+      if (res?.error) {
+        toast.error(`Помилка авторизації...`, {
           style: {
             borderRadius: '10px',
             background: 'grey',
