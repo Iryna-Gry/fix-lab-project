@@ -11,13 +11,13 @@ export const GadgetsList = ({
   >
 }) => {
   return (
-    <ul className='z-2 flex flex-wrap justify-center gap-2 max-xl:max-w-full xl:w-[954px] xl:gap-6'>
+    <ul className='z-2 flex flex-wrap justify-center gap-2 md:max-xl:max-w-full xl:w-[954px] xl:gap-6'>
       {/* any as IGadget = ? */}
       {gadgetsData.map((item: any) => {
         return (
           <li
             key={item.id}
-            className='group h-[261px] w-[302px] rounded-2xl bg-card-repair-gradient  md:w-[calc((100%-10px)/2)] xl:w-[calc((100%-48px)/3)]'
+            className='group h-[261px] w-[302px] rounded-2xl md:max-lg:h-auto lg:max-xl:h-[190px] bg-card-repair-gradient  md:w-[calc((100%-16px)/3)] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
               href={`/repair/${item.slug}`}

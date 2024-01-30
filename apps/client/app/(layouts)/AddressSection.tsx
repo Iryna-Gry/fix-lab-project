@@ -9,7 +9,7 @@ export const AddressSection = async ({
   >
 }) => {
   return (
-    <section className='py-[102px] max-md:py-[56px]'>
+    <section className='py-[102px] max-lg :py-[56px]'>
       <div className='container lg:p-0'>
         <h2 className='mb-5 font-exo_2 text-xl font-semibold text-dark-blue md:text-2xl md:font-bold lg:mb-[22px]'>
           Як нас знайти
