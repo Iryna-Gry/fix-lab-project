@@ -52,7 +52,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         exit={{ x: 500, transition: { duration: 0.3 } }}
         className=' fixed right-0 top-0 z-10 m-[30px] flex w-[365px] flex-col justify-between rounded-2xl bg-dark-blue p-[24px] backdrop-blur-[12.5px] max-md:m-[20px] max-md:w-[320px] max-sm:w-[280px] max-sm:p-[14px]'
       >
-        <div className='flex h-[75dvh] flex-col overflow-auto'>
+        <div className='flex h-[80dvh] flex-col overflow-auto'>
           <div className='flex items-center justify-between'>
             <Link href='/' onClick={toggleMobileMenu} className=' flex gap-3'>
               <Image

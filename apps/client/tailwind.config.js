@@ -76,15 +76,15 @@ module.exports = {
         title: '0.040em',
       },
       backgroundSize: {
-        'mscope-sm': '100%',
-        'mscope-md': '70%',
-        'mscope-lg': '65%',
+        'mscope-sm': '145%',
+        'mscope-md': '115%',
+        'mscope-lg': '80%',
         'mscope-xl': '65%',
         '300%': '300%',
       },
       backgroundPosition: {
-        'mscope-sm': 'top calc(50% - 60px) right calc(50% + 32px)',
-        'mscope-md': 'top calc(50% + 4px) right calc(50% + 4px)',
+        'mscope-sm': 'top calc(50% - 8px) right calc(50% + 32px)',
+        'mscope-md': 'top calc(50% - 4px) right calc(50% + 4px)',
         'mscope-lg': 'top calc(50% + 4px) right calc(50% + 10px)',
         'mscope-xl': 'top calc(50% + 35px) right calc(50% - 32px)',
       },
@@ -114,13 +114,13 @@ module.exports = {
         'phone-not-found': "url('/images/phone-background404.png')",
         'mscope-img': "url('/images/microscope-main.svg')",
         'hero-sm':
-          'conic-gradient(from 147deg at 30% 43%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 46.50% 50.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
         'hero-md':
-          'conic-gradient(from 147deg at 42.50% 51.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 46.50% 50.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
         'hero-lg':
-          'conic-gradient(from 147deg at 44.50% 50.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 46.50% 50.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
         'hero-xl':
-          'conic-gradient(from 147deg at 47.00% 54.00%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 50.00% 54.00%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
       },
       transitionProperty: {
         width: 'width',

@@ -43,10 +43,6 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
         mode: 'free',
       },
       '(min-width: 767px)': {
-        slides: { perView: 3, spacing: 16 },
-        drag: false,
-      },
-      '(min-width: 900px)': {
         slides: { perView: 3, spacing: 25 },
         drag: false,
       },
@@ -151,7 +147,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
               transition: { duration: 0.1 },
             }}
             ref={sliderRef}
-            className='keen-slider ml-4 overflow-hidden pb-[28px] pt-[15px] md:ml-0 md:pb-[20px] md:pt-[10px] lg:pt-[24px]'
+            className='keen-slider ml-4 overflow-hidden pb-[28px] pt-[15px] md:ml-0 md:pb-[20px] md:pt-[24px]'
           >
             {renderSlides()}
           </motion.ul>

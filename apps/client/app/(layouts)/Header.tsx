@@ -126,7 +126,7 @@ export const Header = ({
 
   return (
     <header
-      className={`padding-lock max-md fixed left-0 top-0 h-[10vh] md:h-[15vh] z-50 flex w-full items-center transition-colors ${
+      className={`padding-lock max-md fixed left-0 top-0 z-50 flex w-full items-center transition-colors ${
         isScrolled && ' bg-[#04268B]'
       } ${
         pathname === '/' ||
@@ -141,7 +141,7 @@ export const Header = ({
     >
       <nav
         data-aos={pathname === '/' && 'fade-down'}
-        className='container mx-auto flex w-full items-center justify-between py-6 max-md:justify-between'
+        className='container mx-auto flex w-full items-center  justify-between py-6 max-md:justify-between max-md:pb-[15px] max-md:pt-[30px] lg:px-0'
         aria-label='Global'
       >
         <Link

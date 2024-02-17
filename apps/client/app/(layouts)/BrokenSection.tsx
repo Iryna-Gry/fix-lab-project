@@ -45,7 +45,7 @@ export const BrokenSection = ({
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
   return (
-    <section className=' relative z-[3] pb-[39px] pt-[102px] max-lg:pt-[43px] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
+    <section className=' relative z-[3] pb-[39px] pt-[102px] max-md:pt-[43px] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
       <div className='container lg:px-0 '>
         <div
           data-aos='fade-up'
@@ -56,7 +56,7 @@ export const BrokenSection = ({
             <h3 className='mb-[24px] font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
               Що зламалося?
             </h3>
-            <div className='mb-8 flex flex-col gap-[16px]  text-base font-normal max-md:w-[350px] lg:gap-[23px] xl:max-w-[280px]'>
+            <div className='mb-8 flex flex-col gap-[16px]  text-base font-normal max-md:w-[350px] md:gap-[23px] xl:max-w-[280px]'>
               <p>
                 У нас є багато варіантів, як подарувати друге життя вашому
                 гаджету.

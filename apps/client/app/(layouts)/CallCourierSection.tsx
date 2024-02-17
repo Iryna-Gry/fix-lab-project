@@ -31,14 +31,14 @@ export const CallCourierSection: React.FC = () => {
         className={`container relative flex justify-end pb-[124px] ${
           pathname !== '/'
             ? 'pt-[106px] '
-            : 'pt-[213px] max-xl:pt-[100px] max-lg:py-14'
-        }  max-md:justify-center  max-md:py-14`}
+            : 'pt-[213px] max-xl:pt-[90px] max-md:py-14'
+        }  max-lg:justify-center  max-md:py-14`}
       >
         <div>
           <div
             data-aos='fade-right'
             data-aos-offset='100'
-            className=' absolute bottom-[250px] left-[23px] max-xl:bottom-[235px] max-lg:left-[0] max-md:bottom-[337px] max-md:left-[50%] max-md:translate-x-[-50%] '
+            className=' absolute bottom-[250px] left-[23px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[337px] max-md:left-[50%] max-md:translate-x-[-50%] '
           >
             <Image
               className=' h-auto w-[480px] max-xl:w-[380px] max-md:min-w-[244px]'
@@ -53,7 +53,7 @@ export const CallCourierSection: React.FC = () => {
             </p>
           </div>
           <Image
-            className=' absolute bottom-[72px] left-[51px] h-auto w-[420px] max-xl:bottom-[93px] max-xl:w-[320px] max-lg:bottom-[60px] max-lg:left-[15px] max-md:bottom-[237px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] '
+            className=' absolute bottom-[72px] left-[51px] h-auto w-[420px] max-xl:bottom-[93px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[237px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] '
             src='/images/courier-section/group-bottom.svg'
             alt='FixLab logo'
             width={420}
@@ -61,7 +61,7 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
           <Image
-            className=' absolute bottom-[134px] left-[26px] h-auto w-[467px] max-xl:bottom-[139px] max-xl:w-[367px] max-lg:bottom-[105px] max-lg:left-[-10px] max-md:bottom-[277px] max-md:left-[50%] max-md:w-[244px] max-md:translate-x-[-50%] '
+            className=' absolute bottom-[134px] left-[26px] h-auto w-[467px] max-xl:bottom-[139px] max-xl:w-[367px] max-lg:bottom-[237px] max-lg:left-[0] max-md:bottom-[277px] max-md:left-[50%] max-md:w-[244px] max-md:translate-x-[-50%] '
             src='/images/courier-section/light-center.svg'
             alt='FixLab logo'
             width={467}
@@ -80,27 +80,27 @@ export const CallCourierSection: React.FC = () => {
         <div
           data-aos='fade-up'
           data-aos-offset='100'
-          className='z-[1]  justify-between max-lg:flex max-lg:flex-col md:max-lg:max-w-[350px] max-md:gap-[281px] '
+          className='z-[1]  justify-between max-lg:flex max-lg:flex-col max-md:gap-[281px]'
         >
           <div className='flex flex-col gap-3.5 md:mb-8 '>
-            <p className='text-xl font-[400] leading-9  text-dark-blue max-lg:text-lg'>
+            <p className='text-xl font-[400] leading-9 text-dark-blue max-md:text-xl max-sm:text-lg'>
               Не треба ламати плани!
             </p>
-            <p className='font-exo_2 text-2xl font-bold leading-10 text-dark-blue max-sm:text-lg max-lg:text-[28px]'>
+            <p className='font-exo_2 text-2xl font-bold leading-10 text-dark-blue max-sm:text-lg'>
               Можна викликати курʼєра!
             </p>
           </div>
           <div className='gap-14 max-lg:flex max-lg:flex-col max-md:gap-8'>
-            <p className='w-[503px] font-inter text-xl font-[300] text-dark-blue max-md:w-full  max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14 lg:tracking-[1px]'>
+            <p className='w-[503px] text-xl font-[300] text-dark-blue max-md:w-full  max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14 lg:tracking-[1px]'>
               Ми самі заберемо гаджет на дослідження і він буде жити!
             </p>
-            <p className='max-w-[503px] text-xl font-[300] text-dark-blue max-md:hidden max-md:w-full max-md:font-[400] md:max-lg:text-md max-sm:text-lg lg:mb-14'>
+            <p className='w-[503px] text-xl font-[300] text-dark-blue  max-md:hidden max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
               Ми самі заберемо гаджет на дослідження та подаруємо йому життя
             </p>
             <Button
               text='Потрібен курʼєр'
               toggleModal={toggleCourierModal}
-              styles='group relative flex min-w-[244px] md:max-lg:w-[256px] py-4 items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
+              styles='group relative flex min-w-[244px] py-4 items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
               textHoverAnimation='text-base font-semibold tracking-wide text-white-dis group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>

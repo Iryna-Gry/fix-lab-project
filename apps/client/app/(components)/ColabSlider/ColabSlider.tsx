@@ -59,7 +59,7 @@ export const ColabSlider = () => {
 
   return size.width > 1439 ? (
     <>
-      <ul className='lg:mb-11 flex gap-6 border-b-2 border-b-[#20B9F4]'>
+      <ul className='lg: mb-11 flex gap-6 border-b-2 border-b-[#20B9F4]'>
         {colabData.map(item => (
           <li className='relative h-[98px] w-[302px] lg:h-[89px]' key={item.id}>
             <h3 className='w-[191px] font-exo_2 text-xl font-semibold leading-tight text-white-dis'>
@@ -94,7 +94,7 @@ export const ColabSlider = () => {
         {colabData.map(item => (
           <div
             key={item.id}
-            className='keen-slider__slide flex h-[475px] w-[302px] md:max-lg:h-[400px] flex-col gap-5 rounded-2xl border-[1px] border-l-light-green p-[30px] font-inter text-white-dis'
+            className='keen-slider__slide flex h-[475px] w-[302px] flex-col gap-5 rounded-2xl border-[1px] border-l-light-green p-[30px] font-inter text-white-dis'
           >
             <div className='h-[86px]'>
               <Image
@@ -108,10 +108,10 @@ export const ColabSlider = () => {
             <h3 className='w-3/4 font-exo_2 text-lg font-semibold leading-tight text-white-dis'>
               {item.title}
             </h3>
-            <p className='font-inter text-base max-lg:text-sm leading-normal text-white-dis'>
+            <p className='font-inter text-base leading-normal text-white-dis'>
               {item.text}
             </p>
-            <p className='font-inter text-base max-lg:text-sm leading-normal text-white-dis'>
+            <p className='font-inter text-base leading-normal text-white-dis'>
               {item.subtext}
             </p>
           </div>
