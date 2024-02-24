@@ -20,7 +20,7 @@ const MainBlogSection = ({
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
       <AOSInit />
-      <div className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
+      <div className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] max-lg:pt-[70px] max-lg:gap-3 lg:px-0'>
         <div className='flex flex-wrap items-center gap-1'>
           <Link
             className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
@@ -43,20 +43,20 @@ const MainBlogSection = ({
             return (
               <li data-aos='zoom-in' key={post.id}>
                 <Link href={`/blog/${currentPage}/${post.slug}`}>
-                  <div className='flex h-[515px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola transition-transform duration-300 hover:scale-[1.03]  focus:scale-[1.03] xl:w-[410px]'>
+                  <div className='flex h-[515px] max-md:h-auto max-md:w-full max-w-[410px] flex-col rounded-2xl bg-blue-crayola transition-transform duration-300 hover:scale-[1.03]  focus:scale-[1.03] xl:w-[410px]'>
                     <Image
-                      className='max-h-[278px] min-h-[278px] rounded-t-2xl object-cover'
+                      className='max-h-[278px] min-h-[278px] w-full rounded-t-2xl object-cover'
                       src={`${SERVER_URL}/${post.image.file.path}`}
-                      width={410}
+                      width={360}
                       height={278}
                       alt={post.image.alt}
                       unoptimized
                     />
-                    <div className='flex h-[237px] flex-col justify-between gap-[16px]  px-6 pb-4 pt-[30px] leading-7'>
-                      <h2 className='line-clamp-3 font-exo_2 text-xl font-semibold'>
+                    <div className='flex xl:h-[237px] flex-col justify-between gap-[16px] px-6 pb-4 pt-[30px] leading-7 max-lg:p-4 max-lg:gap-3'>
+                      <h2 className='line-clamp-3 font-exo_2 text-xl font-semibold sm:text-md md:text-lg '>
                         {post.title}
                       </h2>
-                      <p className='relative line-clamp-4 text-ellipsis text-base font-normal leading-6 '>
+                      <p className='relative line-clamp-4 text-ellipsis text-base font-normal leading-6 max-lg:text-sm text-justify'>
                         <span className='absolute bottom-0 z-10 h-[245px] w-full bg-card-blog' />
                         {post.preview}
                       </p>

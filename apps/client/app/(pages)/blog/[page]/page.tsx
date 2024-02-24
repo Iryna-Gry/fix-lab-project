@@ -34,6 +34,9 @@ export default async function Blog({ params }: { params: { page: string } }) {
     sort: 'desc',
     limit: 9,
   })) as outputArticleWithPaginationSchema
+  //   const postsData = [{
+  //    title: "some"
+  //  }]
 
   return (
     <main className='flex-auto'>
