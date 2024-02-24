@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev -p $(grep APP_PORT .env.local | cut -d '=' -f2)",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev -p 3001",
     "build": "next build",
-    "start": "next start -p $(grep APP_PORT .env.local | cut -d '=' -f2)",
+    "start": "next start -p 3001",
     "start:prod": "node server.js",
     "build-stats": "cross-env ANALYZE=true npm run build",
     "build-prod": "run-s clean build",
